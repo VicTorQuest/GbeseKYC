@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract KYCVerifier is EIP712 {
     address public issuer; 
-    mapping(address => bool) public isKYCed;
+    mapping(address => bool) public isVerified;
     bytes32 public constant KYC_TYPEHASH = keccak256("KYC(address user,uint256 issuedAt)");
 
     constructor(address _issuer) EIP712("Gbese KYC", "1") {
@@ -26,7 +26,6 @@ contract KYCVerifier is EIP712 {
         address signer = ECDSA.recover(digest, sig);
         require(signer == issuer, "Invalid or unauthorized KYC signature");
         // (Optional: add expiry check for issuedAt here)
-        isKYCed[user] = true;
+        isVerified[user] = true;
     }
 }
-
